@@ -1,0 +1,15 @@
+{
+    "version": "7.1.0",
+    "projectName": "ffmpeg",
+    "projectDescription": "A complete, cross-platform solution to record, convert and stream audio and video",
+    "vendor": "Björn Stresing",
+    "contact": "bjoern.stresing@gmx.de",
+    "domain": "de.privatehive",
+    "copyrightYear": "2020",
+    "repository": "https://github.com/Privatehive/conan-ffmpeg",
+    "topics": ["multimedia", "audio", "video", "encoder", "decoder", "encoding", "decoding",
+              "transcoding", "multiplexer", "demultiplexer", "streaming"
+    ],
+    "homepage": "https://ffmpeg.org",
+    "license": ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
+  }
