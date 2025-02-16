@@ -115,6 +115,8 @@ class FFMpegConan(ConanFile):
         arch = {
             "x86": "x86",
             "x86_64": "amd64",
+            "armv8": "armv8",
+            "armv7": "armv7",
         }
         return arch.get(str(self.settings.arch))
     
