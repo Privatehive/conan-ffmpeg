@@ -110,7 +110,7 @@ class FFMpegConan(ConanFile):
         arch = {
             "x86": "x86",
             "x86_64": "x86_64" if self.settings.os == 'Android' else 'amd64',
-            "armv8": "arm64" if self.settings.os == 'Macos' else 'armv8',
+            "armv8": "arm64" if self.settings.os == 'Macos' or self.settings.os == 'Android' else 'armv8',
             "armv7": "armv7",
             "armv6": "armv6",
         }
