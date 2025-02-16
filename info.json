@@ -5,11 +5,9 @@
     "vendor": "Björn Stresing",
     "contact": "bjoern.stresing@gmx.de",
     "domain": "de.privatehive",
-    "copyrightYear": "2020",
+    "copyrightYear": "2025",
     "repository": "https://github.com/Privatehive/conan-ffmpeg",
-    "topics": ["multimedia", "audio", "video", "encoder", "decoder", "encoding", "decoding",
-              "transcoding", "multiplexer", "demultiplexer", "streaming"
-    ],
+    "topics": ["multimedia", "audio", "video", "encoder", "decoder", "encoding", "decoding", "transcoding", "multiplexer", "demultiplexer", "streaming"],
     "homepage": "https://ffmpeg.org",
-    "license": ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
+    "license": "GPLv3"
   }

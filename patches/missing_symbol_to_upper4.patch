@@ -1,0 +1,16 @@
+ tools/mklibffmpeg.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/mklibffmpeg.sh b/tools/mklibffmpeg.sh
+index a11809c..504757a 100755
+--- a/tools/mklibffmpeg.sh
++++ b/tools/mklibffmpeg.sh
+@@ -42,7 +42,7 @@ DUP_OBJS=(libswscale/log2_tab.o libswresample/log2_tab.o libavcodec/log2_tab.o l
+   libavfilter/file_open.o
+   libavformat/golomb_tab.o
+   libavcodec/reverse.o libavdevice/reverse.o
+-  libavformat/to_upper4.o
++  #libavformat/to_upper4.o
+   libavformat/dca_sample_rate_tab.o
+   libavformat/ac3_channel_layout_tab.o
+   libavformat/jpegtables.o
