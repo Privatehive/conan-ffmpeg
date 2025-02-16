@@ -114,8 +114,8 @@ class FFMpegConan(ConanFile):
     def avbuild_arch(self):
         arch = {
             "x86": "x86",
-            "x86_64": "amd64",
-            "armv8": "armv8",
+            "x86_64": "x86_64" if self.settings.os == 'Android' else 'amd64',
+            "armv8": "arm64" if self.settings.os == 'Macos' else 'armv8',
             "armv7": "armv7",
         }
         return arch.get(str(self.settings.arch))
@@ -165,24 +165,16 @@ class FFMpegConan(ConanFile):
 
         env1 = Environment()
         env1.define("USE_TOOLCHAIN", self.avbuild_compiler)
-        env1.define("FFSRC", os.path.join(self.source_folder, "ffmpeg"))
+        env1.define("FFSRC", self.source_folder + "/ffmpeg")
 
         options = ['--disable-autodetect', '--disable-programs', '--disable-doc', '--disable-libdrm', '--disable-everything']
 
         env1.define("USER_OPT", " ".join(options))
 
         #env1.define("DEC_OPT_MOBILE", "--enable-decoder=*sub*,movtext,*web*,aac*,ac3*,eac3*,alac*,ape,ass,av1*,ccaption,cfhd,cook,dca,dnxhd,exr,truehd,*yuv*,flv,flac,gif,h26[3-4]*,hevc*,hap,mp[1-3]*,prores,*[mj]peg*,mlp,mpl2,nellymoser,opus,pcm*,qtrle,*png*,tiff,rawvideo,rv*,sami,srt,ssa,v210*,vc1*,vorbis,vp[6-9]*,wm*,wrapped_avframe")
-        #env1.define("USER_OPT", "--enable-small --disable-outdevs --disable-filters --disable-muxers --disable-encoders --disable-decoders --disable-demuxers --disable-protocols")
-        #env1.define("USER_OPT", "--enable-small --disable-outdevs --disable-filters --disable-muxers --disable-encoders --disable-decoders --disable-demuxers --disable-protocols")
-        #env1.define("USER_OPT", "--enable-small --disable-outdevs --disable-filters --disable-muxers --disable-encoders --disable-decoders --disable-demuxers --disable-protocols")
-        #env1.define("USER_OPT", "--enable-small --disable-outdevs --disable-filters --disable-muxers --disable-encoders --disable-decoders --disable-demuxers --disable-protocols")
-        #env1.define("USER_OPT", "--enable-small --disable-outdevs --disable-filters --disable-muxers --disable-encoders --disable-decoders --disable-demuxers --disable-protocols")
-        #env1.define("USER_OPT", "--enable-small --disable-outdevs --disable-filters --disable-muxers --disable-encoders --disable-decoders --disable-demuxers --disable-protocols")
-        #env1.define("USER_OPT", "--enable-small --disable-outdevs --disable-filters --disable-muxers --disable-encoders --disable-decoders --disable-demuxers --disable-protocols")
-        #env1.define("USER_OPT", "--enable-small --disable-outdevs --disable-filters --disable-muxers --disable-encoders --disable-decoders --disable-demuxers --disable-protocols")
 
         with env1.vars(self).apply():
-            self.run("%s %s %s" % (os.path.join(self.build_folder, "avbuild", "avbuild.sh"), self.avbuild_os, self.avbuild_arch), cwd=os.path.join(self.build_folder, "avbuild"))
+            self.run("%s %s %s" % (self.build_folder + "/avbuild/avbuild.sh", self.avbuild_os, self.avbuild_arch), cwd=os.path.join(self.build_folder, "avbuild"))
 
     def package(self):
         out_dir = "sdk-%s-%s-%s" % (self.avbuild_os, self.avbuild_arch, self.avbuild_compiler)
