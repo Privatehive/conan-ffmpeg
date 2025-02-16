@@ -124,15 +124,28 @@ class FFMpegConan(ConanFile):
     
     @property
     def avbuild_compiler(self):
-        return str(self.settings.compiler).lower()
+        compiler = {
+            "gcc": "gcc",
+            "clang": "clang",
+            "apple-clang": "clang",
+        }
+        return compiler.get(str(self.settings.compiler))
+
+    @property
+    def _settings_build(self):
+        return getattr(self, "settings_build", self.settings)
 
     def source(self):
         get(self, **self.conan_data["sources"][self.version], destination="ffmpeg", strip_root=True)
     
-    def requirements(self):
+    def build_requirements(self):
         if self.settings.os == 'Linux' or self.settings.os == 'Windows':
             if self.settings.arch == 'x86' or self.settings.arch == 'x86_64':
                 self.tool_requires("nasm/2.16.01")
+        if self._settings_build.os == "Windows":
+            self.win_bash = True
+            if not self.conf.get("tools.microsoft.bash:path", check_type=str):
+                self.tool_requires("msys2/cci.latest")
 
     def generate(self):
         ms = VirtualBuildEnv(self)
@@ -152,7 +165,7 @@ class FFMpegConan(ConanFile):
         env1.define("USE_TOOLCHAIN", self.avbuild_compiler)
         env1.define("FFSRC", os.path.join(self.source_folder, "ffmpeg"))
 
-        options = ['--disable-autodetect', '--disable-programs', '--disable-doc', '--disable-everything']
+        options = ['--disable-autodetect', '--disable-programs', '--disable-doc', '--disable-libdrm', '--disable-everything']
 
         env1.define("USER_OPT", " ".join(options))
 
