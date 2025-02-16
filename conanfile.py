@@ -183,11 +183,50 @@ class FFMpegConan(ConanFile):
         env1.define("FFSRC", self.adjust_path(os.path.join(self.source_folder, "ffmpeg")))
 
         options = ['--disable-autodetect', '--disable-programs', '--disable-doc', '--disable-libdrm', '--disable-everything', '--disable-os2threads', '--enable-gpl', '--enable-version3']
+
         if self.is_mingw:
             if getattr(getattr(self.settings, 'compiler'), 'threads') == 'posix':
                 options.append('--disable-w32threads')
             if getattr(getattr(self.settings, 'compiler'), 'threads') == 'win32':
                 options.append('--disable-pthreads')
+
+        if self.options.disable_avdevice:
+            options.append('--disable-avdevice')
+        if self.options.disable_avcodec:
+            options.append('--disable-avcodec')
+        if self.options.disable_avformat:
+            options.append('--disable-avformat')
+        if self.options.disable_swresample:
+            options.append('--disable-swresample')
+        if self.options.disable_swscale:
+            options.append('--disable-swscale')
+        if self.options.disable_postproc:
+            options.append('--disable-postproc')
+        if self.options.disable_avfilter:
+            options.append('--disable-avfilter')
+
+        if self.options.enable_encoders:
+            options.append("--enable-encoder='%s'" % self.options.enable_encoders)
+        if self.options.enable_encoders:
+            options.append("--enable-decoder='%s'" % self.options.enable_decoders)
+        if self.options.enable_hardware_accelerators:
+            options.append("--enable-hwaccel='%s'" % self.options.enable_hardware_accelerators)
+        if self.options.enable_muxers:
+            options.append("--enable-muxer='%s'" % self.options.enable_muxers)
+        if self.options.enable_demuxers:
+            options.append("--enable-demuxer='%s'" % self.options.enable_demuxers)
+        if self.options.enable_parsers:
+            options.append("--enable-parser='%s'" % self.options.enable_parsers)
+        if self.options.enable_bitstream_filters:
+            options.append("--enable-bsf='%s'" % self.options.enable_bitstream_filters)
+        if self.options.enable_protocols:
+            options.append("--enable-protocol='%s'" % self.options.enable_protocols)
+        if self.options.enable_input_devices:
+            options.append("--enable-indev='%s'" % self.options.enable_input_devices)
+        if self.options.enable_output_devices:
+            options.append("--enable-outdev='%s'" % self.options.enable_output_devices)
+        if self.options.enable_filters:
+            options.append("--enable-filter='%s'" % self.options.enable_filters)
 
         env1.define("USER_OPT", " ".join(options))
 
@@ -200,3 +239,37 @@ class FFMpegConan(ConanFile):
         out_dir = "sdk-%s-%s-%s" % (self.avbuild_os, self.avbuild_arch, self.avbuild_compiler)
         print(out_dir)
         copy(self, "*", src=os.path.join(self.build_folder, "avbuild", out_dir), dst=self.package_folder)
+
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "ffmpeg")
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.components["ffmpeg"].set_property("cmake_target_name", "ffmpeg::ffmpeg")
+        self.cpp_info.components["ffmpeg"].set_property("cmake_find_mode", "both")
+        self.cpp_info.components["ffmpeg"].libs = ["ffmpeg"]
+        self.cpp_info.components["avutil"].set_property("cmake_target_name", "ffmpeg::avutil")
+        self.cpp_info.components["avutil"].set_property("cmake_find_mode", "both")
+        self.cpp_info.components["avutil"].libs = ["avutil"]
+        if self.options.disable_avdevice == False:
+            self.cpp_info.components["avdevice"].set_property("cmake_target_name", "ffmpeg::avdevice")
+            self.cpp_info.components["avdevice"].set_property("cmake_find_mode", "both")
+            self.cpp_info.components["avdevice"].libs = ["avdevice"]
+        if self.options.disable_avcodec == False:
+            self.cpp_info.components["avcodec"].set_property("cmake_target_name", "ffmpeg::avcodec")
+            self.cpp_info.components["avcodec"].set_property("cmake_find_mode", "both")
+            self.cpp_info.components["avcodec"].libs = ["avcodec"]
+        if self.options.disable_avformat == False:
+            self.cpp_info.components["avformat"].set_property("cmake_target_name", "ffmpeg::avformat")
+            self.cpp_info.components["avformat"].set_property("cmake_find_mode", "both")
+            self.cpp_info.components["avformat"].libs = ["avformat"]
+        if self.options.disable_swresample == False:
+            self.cpp_info.components["swresample"].set_property("cmake_target_name", "ffmpeg::swresample")
+            self.cpp_info.components["swresample"].set_property("cmake_find_mode", "both")
+            self.cpp_info.components["swresample"].libs = ["swresample"]
+        if self.options.disable_swscale == False:
+            self.cpp_info.components["swscale"].set_property("cmake_target_name", "ffmpeg::swscale")
+            self.cpp_info.components["swscale"].set_property("cmake_find_mode", "both")
+            self.cpp_info.components["swscale"].libs = ["swscale"]
+        if self.options.disable_avfilter == False:
+            self.cpp_info.components["avfilter"].set_property("cmake_target_name", "ffmpeg::avfilter")
+            self.cpp_info.components["avfilter"].set_property("cmake_find_mode", "both")
+            self.cpp_info.components["avfilter"].libs = ["avfilter"]
