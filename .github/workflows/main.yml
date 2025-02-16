@@ -26,7 +26,7 @@ jobs:
 
   build_android_x86:
     name: "Android"
-    uses: Privatehive/conan-workflows/.github/workflows/createPackageGcpRunner.yml@master
+    uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
     with:
       image: "ubuntu-20.04"
       conan_host_profile: "androidx86"
@@ -34,7 +34,7 @@ jobs:
 
   build_android_x86_64:
     name: "Android"
-    uses: Privatehive/conan-workflows/.github/workflows/createPackageGcpRunner.yml@master
+    uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
     with:
       image: "ubuntu-20.04"
       conan_host_profile: "androidx86_64"
@@ -42,7 +42,7 @@ jobs:
 
   build_android_armv7:
     name: "Android"
-    uses: Privatehive/conan-workflows/.github/workflows/createPackageGcpRunner.yml@master
+    uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
     with:
       image: "ubuntu-20.04"
       conan_host_profile: "androidArmv7"
@@ -50,7 +50,7 @@ jobs:
 
   build_android_armv8:
     name: "Android"
-    uses: Privatehive/conan-workflows/.github/workflows/createPackageGcpRunner.yml@master
+    uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
     with:
       image: "ubuntu-20.04"
       conan_host_profile: "androidArmv8"
