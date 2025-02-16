@@ -171,7 +171,9 @@ class FFMpegConan(ConanFile):
         git.clone(url="https://github.com/wang-bin/avbuild.git", args=["--recurse-submodules", "--shallow-submodules"], target="avbuild")
         git.folder = "avbuild"
         git.checkout("80373c7a7eecabfb479f6ff06fc4b3e0f22d6c79")
-        patch(self, base_path=os.path.join(self.build_folder, "avbuild"), patch_file=os.path.join(self.source_folder, "patches", "missing_symbol_to_upper4.patch"))
+        if self.is_mingw:
+            # for mingw we are missing symbold 'to_upper4' for other builds we have duplicate symbols 'to_upper4'
+            patch(self, base_path=os.path.join(self.build_folder, "avbuild"), patch_file=os.path.join(self.source_folder, "patches", "missing_symbol_to_upper4.patch"))
 
         f = open(os.path.join("avbuild", "config.sh"), "w")
         f.close()
