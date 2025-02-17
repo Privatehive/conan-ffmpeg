@@ -5,6 +5,7 @@ import json, os
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.env import Environment, VirtualBuildEnv
+from conan.tools.gnu import PkgConfigDeps
 from conan.tools.files import  patch, copy, get
 from conan.tools.scm import Git
 
@@ -36,6 +37,7 @@ class FFMpegConan(ConanFile):
     options = {
         "shared": [True, False],
         "fPIC": [True, False],
+        "openssl": [True, False],
         "avdevice": [True, False],
         "avcodec": [True, False],
         "avformat": [True, False],
@@ -68,6 +70,7 @@ class FFMpegConan(ConanFile):
     default_options = {
         "shared": True,
         "fPIC": True,
+        "openssl": False,
         "avdevice": False,
         "avcodec": False,
         "avformat": False,
@@ -138,6 +141,10 @@ class FFMpegConan(ConanFile):
     def adjust_path(self, path):
         return path.replace("\\", "/")
 
+    def requirements(self):
+        if self.options.openssl:
+            self.requires("openssl/[~3]@%s/stable" % self.user)
+
     def source(self):
         get(self, **self.conan_data["sources"][self.version], destination="ffmpeg", strip_root=True)
     
@@ -165,6 +172,8 @@ class FFMpegConan(ConanFile):
     def generate(self):
         ms = VirtualBuildEnv(self)
         ms.generate()
+        pc = PkgConfigDeps(self)
+        pc.generate()
 
     def build(self):
         git = Git(self)
@@ -180,9 +189,13 @@ class FFMpegConan(ConanFile):
 
         env1 = Environment()
         env1.define("USE_TOOLCHAIN", self.avbuild_compiler)
+        env1.define("PKG_CONFIG_PATH", self.build_folder)
         env1.define("FFSRC", self.adjust_path(os.path.join(self.source_folder, "ffmpeg")))
 
         options = ['--disable-autodetect', '--disable-programs', '--disable-doc', '--disable-libdrm', '--disable-everything', '--disable-os2threads', '--enable-gpl', '--enable-version3']
+
+        if self.options.openssl:
+            options.append('--enable-openssl')
 
         if self.is_mingw:
             if getattr(getattr(self.settings, 'compiler'), 'threads') == 'posix':
