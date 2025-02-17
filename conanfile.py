@@ -232,8 +232,12 @@ class FFMpegConan(ConanFile):
 
         #env1.define("DEC_OPT_MOBILE", "--enable-decoder=*sub*,movtext,*web*,aac*,ac3*,eac3*,alac*,ape,ass,av1*,ccaption,cfhd,cook,dca,dnxhd,exr,truehd,*yuv*,flv,flac,gif,h26[3-4]*,hevc*,hap,mp[1-3]*,prores,*[mj]peg*,mlp,mpl2,nellymoser,opus,pcm*,qtrle,*png*,tiff,rawvideo,rv*,sami,srt,ssa,v210*,vc1*,vorbis,vp[6-9]*,wm*,wrapped_avframe")
 
+        api_lvl = ""
+        if self.settings.os == 'Android':
+            api_lvl = getattr(self.settings.os, "api_level")
+
         with env1.vars(self).apply():
-            self.run("%s %s %s" % (self.adjust_path(os.path.join(self.build_folder, "avbuild", "avbuild.sh")), self.avbuild_os, self.avbuild_arch), cwd=self.adjust_path(os.path.join(self.build_folder, "avbuild")))
+            self.run("%s %s%s %s" % (self.adjust_path(os.path.join(self.build_folder, "avbuild", "avbuild.sh")), self.avbuild_os, api_lvl, self.avbuild_arch), cwd=self.adjust_path(os.path.join(self.build_folder, "avbuild")))
 
     def package(self):
         out_dir = "sdk-%s-%s-%s" % (self.avbuild_os, self.avbuild_arch, self.avbuild_compiler)
