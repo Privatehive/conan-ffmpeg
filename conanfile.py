@@ -247,10 +247,6 @@ class FFMpegConan(ConanFile):
             options.append("--cc='%s'" % build_env.get("CC"))
         if build_env.get("CXX"):
             options.append("--cxx='%s'" % build_env.get("CXX"))
-        if build_env.get("AR"):
-            options.append("--ar='%s'" % build_env.get("AR"))
-        if build_env.get("AS"):
-            options.append("--as='%s'" % build_env.get("AS"))
 
         env1.define("USER_OPT", " ".join(options))
 
