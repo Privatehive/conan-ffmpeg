@@ -241,6 +241,17 @@ class FFMpegConan(ConanFile):
         if self.options.enable_filters:
             options.append("--enable-filter='%s'" % self.options.enable_filters)
 
+        build_env = VirtualBuildEnv(self).vars()
+
+        if build_env.get("CC"):
+            options.append("--cc='%s'" % build_env.get("CC"))
+        if build_env.get("CXX"):
+            options.append("--cxx='%s'" % build_env.get("CXX"))
+        if build_env.get("AR"):
+            options.append("--ar='%s'" % build_env.get("AR"))
+        if build_env.get("AS"):
+            options.append("--as='%s'" % build_env.get("AS"))
+
         env1.define("USER_OPT", " ".join(options))
 
         #env1.define("DEC_OPT_MOBILE", "--enable-decoder=*sub*,movtext,*web*,aac*,ac3*,eac3*,alac*,ape,ass,av1*,ccaption,cfhd,cook,dca,dnxhd,exr,truehd,*yuv*,flv,flac,gif,h26[3-4]*,hevc*,hap,mp[1-3]*,prores,*[mj]peg*,mlp,mpl2,nellymoser,opus,pcm*,qtrle,*png*,tiff,rawvideo,rv*,sami,srt,ssa,v210*,vc1*,vorbis,vp[6-9]*,wm*,wrapped_avframe")
