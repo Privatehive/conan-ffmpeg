@@ -6,7 +6,7 @@ jobs:
     name: "Linux"
     uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
     with:
-      image: "ubuntu-20.04"
+      image: "ubuntu-22.04"
       conan_remotes: https://conan.privatehive.de/artifactory/api/conan/public-conan
 
   build_windows_x86_64:
@@ -28,7 +28,7 @@ jobs:
     name: "Android"
     uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
     with:
-      image: "ubuntu-20.04"
+      image: "ubuntu-22.04"
       conan_host_profile: "androidx86"
       conan_remotes: https://conan.privatehive.de/artifactory/api/conan/public-conan
 
@@ -36,7 +36,7 @@ jobs:
     name: "Android"
     uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
     with:
-      image: "ubuntu-20.04"
+      image: "ubuntu-22.04"
       conan_host_profile: "androidx86_64"
       conan_remotes: https://conan.privatehive.de/artifactory/api/conan/public-conan
 
@@ -44,7 +44,7 @@ jobs:
     name: "Android"
     uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
     with:
-      image: "ubuntu-20.04"
+      image: "ubuntu-22.04"
       conan_host_profile: "androidArmv7"
       conan_remotes: https://conan.privatehive.de/artifactory/api/conan/public-conan
 
@@ -52,7 +52,7 @@ jobs:
     name: "Android"
     uses: Privatehive/conan-workflows/.github/workflows/createPackage.yml@master
     with:
-      image: "ubuntu-20.04"
+      image: "ubuntu-22.04"
       conan_host_profile: "androidArmv8"
       conan_remotes: https://conan.privatehive.de/artifactory/api/conan/public-conan
 
